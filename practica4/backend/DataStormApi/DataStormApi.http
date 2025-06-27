@@ -1,0 +1,6 @@
+@DataStormApi_HostAddress = http://localhost:5190
+
+GET {{DataStormApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
