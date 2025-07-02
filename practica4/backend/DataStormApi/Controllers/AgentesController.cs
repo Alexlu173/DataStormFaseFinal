@@ -21,88 +21,83 @@ namespace DataStormApi.Controllers
             _context = context;
         }
 
-        // GET: api/Agentes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Agente>>> GetAgentes()
+        public async Task<ActionResult<IEnumerable<AgenteDto>>> GetAgentes()
         {
-            return await _context.Agentes.ToListAsync();
+            var agentes = await _context.Agentes.ToListAsync();
+            return agentes.Select(ToDto).ToList();
         }
 
-        // GET: api/Agentes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Agente>> GetAgente(long id)
+        public async Task<ActionResult<AgenteDto>> GetAgente(int id)
         {
             var agente = await _context.Agentes.FindAsync(id);
-
-            if (agente == null)
-            {
-                return NotFound();
-            }
-
-            return agente;
+            if (agente == null) return NotFound();
+            return ToDto(agente);
         }
 
-        // PUT: api/Agentes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAgente(long id, Agente agente)
-        {
-            if (id != agente.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(agente).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AgenteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Agentes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Agente>> PostAgente(Agente agente)
+        public async Task<ActionResult<AgenteDto>> PostAgente(AgenteDto dto)
         {
+            var agente = new Agente
+            {
+                Nombre = dto.Nombre,
+                NombreAgente = dto.NombreAgente,
+                Apellido = dto.Apellido,
+                email = dto.email,
+                password = dto.password,
+                rango = dto.Rango,
+                Activo = dto.Activo,
+                EquipoId = dto.EquipoId
+            };
+
             _context.Agentes.Add(agente);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAgente", new { id = agente.Id }, agente);
+            return CreatedAtAction(nameof(GetAgente), new { id = agente.Id }, ToDto(agente));
         }
 
-        // DELETE: api/Agentes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAgente(long id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAgente(int id, AgenteDto dto)
         {
             var agente = await _context.Agentes.FindAsync(id);
-            if (agente == null)
-            {
-                return NotFound();
-            }
+            if (agente == null) return NotFound();
 
-            _context.Agentes.Remove(agente);
+            agente.Nombre = dto.Nombre;
+            agente.NombreAgente = dto.NombreAgente;
+            agente.Apellido = dto.Apellido;
+            agente.email = dto.email;
+            agente.password = dto.password;
+            agente.rango = dto.Rango;
+            agente.Activo = dto.Activo;
+            agente.EquipoId = dto.EquipoId;
+
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool AgenteExists(long id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAgente(int id)
         {
-            return _context.Agentes.Any(e => e.Id == id);
+            var agente = await _context.Agentes.FindAsync(id);
+            if (agente == null) return NotFound();
+
+            _context.Agentes.Remove(agente);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
+
+        private static AgenteDto ToDto(Agente a) => new()
+        {
+            Id = a.Id,
+            Nombre = a.Nombre,
+            NombreAgente = a.NombreAgente,
+            Apellido = a.Apellido,
+            email = a.email,
+            password = a.password,
+            Rango = a.rango,
+            Activo = a.Activo,
+            EquipoId = a.EquipoId
+        };
     }
 }

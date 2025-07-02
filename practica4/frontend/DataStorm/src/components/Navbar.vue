@@ -1,0 +1,85 @@
+<!-- NavBar.vue -->
+<script setup>
+import { ref } from 'vue';
+const isDarkMode = ref(false);
+// Función para cambiar el tema
+const toggleTheme = () => {
+  isDarkMode.value = !isDarkMode.value;
+  document.documentElement.classList.toggle('dark', isDarkMode.value);
+  localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
+};
+// Cargar el tema al iniciar
+if (localStorage.getItem('theme') === 'dark') {
+  isDarkMode.value = true;
+  document.documentElement.classList.add('dark');
+} else {
+  isDarkMode.value = false;
+  document.documentElement.classList.remove('dark');
+}
+
+</script>
+
+<template>
+  <div class="navbar bg-base-100 px-4">
+    <!-- Logo y título -->
+    <div class="flex-1">
+      <router-link to="/" class="btn btn-ghost normal-case text-xl">DataStorm</router-link>
+    </div>
+    <!-- Links -->
+    <div class="flex-none gap-2">
+      <div class="hidden md:flex items-center gap-4">
+        <router-link to="/" class="btn btn-ghost">Inicio</router-link>
+        <template v-if=true>
+          <router-link to="/operaciones" class="btn btn-ghost">Operaciones</router-link>
+          <router-link to="/login" class="btn btn-ghost">Login</router-link>
+          <router-link to="/register" class="btn btn-ghost">Registro</router-link>
+          <label class="toggle text-base-content">
+            <input type="checkbox" value="dark" class="theme-controller" />
+
+            <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </g>
+            </svg>
+            <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </g>
+            </svg>
+          </label>
+        </template>
+        <template v-else>
+          <router-link to="/todolist" class="btn btn-ghost">Tareas</router-link>
+          <button @click="logout" class="btn btn-outline btn-sm">Cerrar sesión</button>
+        </template>
+      </div>
+      <!-- Menú móvil -->
+      <div class="dropdown dropdown-end md:hidden">
+        <label tabindex="0" class="btn btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </label>
+        <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><router-link to="/">Inicio</router-link></li>
+          <template v-if=true>
+            <li><router-link to="/login">Login</router-link></li>
+            <li><router-link to="/register">Registro</router-link></li>
+          </template>
+          <template v-else>
+            <li><router-link to="/todolist">Tareas</router-link></li>
+            <li><a @click="logout">Cerrar sesión</a></li>
+          </template>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>

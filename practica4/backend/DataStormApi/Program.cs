@@ -2,7 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using DataStormApi.Models;
 using DataStormApi.Data;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyHeader() // Con esto permitimos cualquier header que se mande a traves de CORS(no es lo recomendado)
+                                .AllowAnyMethod();
+                      });
+});
 
 // Add services to the container.
 
@@ -26,8 +39,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.CreateDbIfNotExists();
 
 app.Run();

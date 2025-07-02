@@ -1,4 +1,6 @@
 namespace DataStormApi.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 public class Operacion
 {
@@ -8,8 +10,7 @@ public class Operacion
         Activa,
         Completada
     }
-
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string? Nombre { get; set; }
     public EstadoOperacion Estado { get; set; }
     public DateTime FechaInicio { get; set; }

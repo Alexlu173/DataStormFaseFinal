@@ -6,7 +6,6 @@ namespace DataStormApi.Data
     {
         public static void Initialize(AppDbContext context)
         {
-
             if (context.Operaciones.Any()
                 && context.Equipos.Any()
                 && context.Agentes.Any())
@@ -14,47 +13,48 @@ namespace DataStormApi.Data
                 return;   // DB has been seeded
             }
 
-            var operacionAlfa = new Operacion { Nombre = "Alfa", Estado = "Activa", FechaInicio = DateTime.now(), FechaFin = DateTime.now().AddDays(2)};
-            var operacionBeta = new Operacion { Nombre = "Beta", Estado = "Planificada", FechaInicio = DateTime.now(), FechaFin = DateTime.now().AddDays(2)};
-            var operacionDelta = new Operacion { Nombre = "Delta", Estado = "Completada", FechaInicio = DateTime.now(), FechaFin = DateTime.now().AddDays(2)};
-
-            var operaciones = new Operacion[]
+            // Crear operaciones
+            var operacionAlfa = new Operacion
             {
-                new Pizza
-                    { 
-                        Name = "Meat Lovers", 
-                        Sauce = tomatoSauce, 
-                        Toppings = new List<Topping>
-                            {
-                                pepperoniTopping, 
-                                sausageTopping, 
-                                hamTopping, 
-                                chickenTopping
-                            }
-                    },
-                new Pizza
-                    { 
-                        Name = "Hawaiian", 
-                        Sauce = tomatoSauce, 
-                        Toppings = new List<Topping>
-                            {
-                                pineappleTopping, 
-                                hamTopping
-                            }
-                    },
-                new Pizza
-                    { 
-                        Name="Alfredo Chicken", 
-                        Sauce = alfredoSauce, 
-                        Toppings = new List<Topping>
-                            {
-                                chickenTopping
-                            }
-                        }
+                Nombre = "Alfa",
+                Estado = Operacion.EstadoOperacion.Completada,
+                FechaInicio = DateTime.Now,
+                FechaFin = DateTime.Now.AddDays(2)
+            };
+            var operacionBeta = new Operacion
+            {
+                Nombre = "Beta",
+                Estado = Operacion.EstadoOperacion.Planificada,
+                FechaInicio = DateTime.Now,
+                FechaFin = DateTime.Now.AddDays(2)
+            };
+            var operacionDelta = new Operacion
+            {
+                Nombre = "Delta",
+                Estado = Operacion.EstadoOperacion.Activa,
+                FechaInicio = DateTime.Now,
+                FechaFin = DateTime.Now.AddDays(2)
             };
 
-            context.Pizzas.AddRange(pizzas);
+            context.Operaciones.AddRange(operacionAlfa, operacionBeta, operacionDelta);
+            context.SaveChanges();
+
+            // Crear equipos
+            var equipoAlpha = new Equipo { Nombre = "Equipo Alpha", especialidad = "Reconocimiento", OperacionId = operacionAlfa.Id };
+            var equipoBeta = new Equipo { Nombre = "Equipo Beta", especialidad = "Asalto", OperacionId = operacionBeta.Id };
+            var equipoDelta = new Equipo { Nombre = "Equipo Delta", especialidad = "Rescate", OperacionId = operacionDelta.Id };
+
+            context.Equipos.AddRange(equipoAlpha, equipoBeta, equipoDelta);
+            context.SaveChanges();
+
+            // Crear agentes
+            var agente1 = new Agente { Nombre = "Agente 1", NombreAgente="Pedro", Apellido="Ramirez", email="agente1@gmail.com", password="123" ,rango = "Líder", Activo = true, EquipoId = equipoAlpha.Id };
+            var agente2 = new Agente { Nombre = "Agente 2", NombreAgente="Alonso", Apellido="Perez", email="agente2@gmail.com", password="1233",rango = "Especialista", Activo = true, EquipoId = equipoAlpha.Id };
+            var agente3 = new Agente { Nombre = "Agente 3", NombreAgente="Maria", Apellido="Sanchez", email="agente3@gmail.com", password="1234",rango = "Técnico", Activo = true, EquipoId = equipoBeta.Id };
+            var agente4 = new Agente { Nombre = "Agente 4",NombreAgente="Alejandro", Apellido="Luna", email="agente4@gmail.com", password="1232", rango = "Operativo", Activo = true, EquipoId = equipoDelta.Id };
+            context.Agentes.AddRange(agente1, agente2, agente3, agente4);
             context.SaveChanges();
         }
+
     }
 }

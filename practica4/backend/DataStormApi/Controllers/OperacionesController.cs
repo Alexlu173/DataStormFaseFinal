@@ -21,88 +21,94 @@ namespace DataStormApi.Controllers
             _context = context;
         }
 
-        // GET: api/Operaciones
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Operacion>>> GetOperaciones()
+        public async Task<ActionResult<IEnumerable<OperacionDto>>> GetOperaciones()
         {
-            return await _context.Operaciones.ToListAsync();
+            var operaciones = await _context.Operaciones
+                .Include(o => o.Equipos)
+                    .ThenInclude(e => e.Agentes)
+                .ToListAsync();
+
+            return operaciones.Select(ToDto).ToList();
         }
 
-        // GET: api/Operaciones/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Operacion>> GetOperacion(long id)
+        public async Task<ActionResult<OperacionDto>> GetOperacion(int id)
         {
-            var operacion = await _context.Operaciones.FindAsync(id);
+            var operacion = await _context.Operaciones
+                .Include(o => o.Equipos)
+                    .ThenInclude(e => e.Agentes)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (operacion == null)
-            {
-                return NotFound();
-            }
-
-            return operacion;
+            if (operacion == null) return NotFound();
+            return ToDto(operacion);
         }
 
-        // PUT: api/Operaciones/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOperacion(long id, Operacion operacion)
-        {
-            if (id != operacion.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(operacion).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OperacionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Operaciones
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Operacion>> PostOperacion(Operacion operacion)
+        public async Task<ActionResult<OperacionDto>> PostOperacion(OperacionDto dto)
         {
+            var operacion = new Operacion
+            {
+                Nombre = dto.Nombre,
+                Estado = Enum.Parse<Operacion.EstadoOperacion>(dto.Estado),
+                FechaInicio = dto.FechaInicio,
+                FechaFin = dto.FechaFin
+            };
+
             _context.Operaciones.Add(operacion);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOperacion", new { id = operacion.Id }, operacion);
+            return CreatedAtAction(nameof(GetOperacion), new { id = operacion.Id }, ToDto(operacion));
         }
 
-        // DELETE: api/Operaciones/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOperacion(long id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOperacion(int id, OperacionDto dto)
         {
             var operacion = await _context.Operaciones.FindAsync(id);
-            if (operacion == null)
-            {
-                return NotFound();
-            }
+            if (operacion == null) return NotFound();
 
-            _context.Operaciones.Remove(operacion);
+            operacion.Nombre = dto.Nombre;
+            operacion.Estado = Enum.Parse<Operacion.EstadoOperacion>(dto.Estado);
+            operacion.FechaInicio = dto.FechaInicio;
+            operacion.FechaFin = dto.FechaFin;
+
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool OperacionExists(long id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOperacion(int id)
         {
-            return _context.Operaciones.Any(e => e.Id == id);
+            var operacion = await _context.Operaciones.FindAsync(id);
+            if (operacion == null) return NotFound();
+
+            _context.Operaciones.Remove(operacion);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
+
+        private static OperacionDto ToDto(Operacion o) => new()
+        {
+            Id = o.Id,
+            Nombre = o.Nombre,
+            Estado = o.Estado.ToString(),
+            FechaInicio = o.FechaInicio,
+            FechaFin = o.FechaFin,
+            Equipos = o.Equipos.Select(e => new EquipoDto
+            {
+                Id = e.Id,
+                Nombre = e.Nombre,
+                Especialidad = e.especialidad,
+                OperacionId = e.OperacionId,
+                Agentes = e.Agentes.Select(a => new AgenteDto
+                {
+                    Id = a.Id,
+                    Nombre = a.Nombre,
+                    Rango = a.rango,
+                    Activo = a.Activo,
+                    EquipoId = a.EquipoId
+                }).ToList()
+            }).ToList()
+        };
     }
 }

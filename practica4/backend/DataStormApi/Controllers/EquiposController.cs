@@ -21,88 +21,79 @@ namespace DataStormApi.Controllers
             _context = context;
         }
 
-        // GET: api/Equipos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquipos()
+        public async Task<ActionResult<IEnumerable<EquipoDto>>> GetEquipos()
         {
-            return await _context.Equipos.ToListAsync();
+            var equipos = await _context.Equipos.Include(e => e.Agentes).ToListAsync();
+            return equipos.Select(ToDto).ToList();
         }
 
-        // GET: api/Equipos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Equipo>> GetEquipo(long id)
+        public async Task<ActionResult<EquipoDto>> GetEquipo(int id)
         {
-            var equipo = await _context.Equipos.FindAsync(id);
+            var equipo = await _context.Equipos
+                .Include(e => e.Agentes)
+                .FirstOrDefaultAsync(e => e.Id == id);
 
-            if (equipo == null)
-            {
-                return NotFound();
-            }
-
-            return equipo;
+            if (equipo == null) return NotFound();
+            return ToDto(equipo);
         }
 
-        // PUT: api/Equipos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEquipo(long id, Equipo equipo)
-        {
-            if (id != equipo.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(equipo).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EquipoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Equipos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Equipo>> PostEquipo(Equipo equipo)
+        public async Task<ActionResult<EquipoDto>> PostEquipo(EquipoDto dto)
         {
+            var equipo = new Equipo
+            {
+                Nombre = dto.Nombre,
+                especialidad = dto.Especialidad,
+                OperacionId = dto.OperacionId
+            };
+
             _context.Equipos.Add(equipo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEquipo", new { id = equipo.Id }, equipo);
+            return CreatedAtAction(nameof(GetEquipo), new { id = equipo.Id }, ToDto(equipo));
         }
 
-        // DELETE: api/Equipos/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEquipo(long id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEquipo(int id, EquipoDto dto)
         {
             var equipo = await _context.Equipos.FindAsync(id);
-            if (equipo == null)
-            {
-                return NotFound();
-            }
+            if (equipo == null) return NotFound();
 
-            _context.Equipos.Remove(equipo);
+            equipo.Nombre = dto.Nombre;
+            equipo.especialidad = dto.Especialidad;
+            equipo.OperacionId = dto.OperacionId;
+
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool EquipoExists(long id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEquipo(int id)
         {
-            return _context.Equipos.Any(e => e.Id == id);
+            var equipo = await _context.Equipos.FindAsync(id);
+            if (equipo == null) return NotFound();
+
+            _context.Equipos.Remove(equipo);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
+
+        private static EquipoDto ToDto(Equipo e) => new()
+        {
+            Id = e.Id,
+            Nombre = e.Nombre,
+            Especialidad = e.especialidad,
+            OperacionId = e.OperacionId,
+            Agentes = e.Agentes.Select(a => new AgenteDto
+            {
+                Id = a.Id,
+                Nombre = a.Nombre,
+                Rango = a.rango,
+                Activo = a.Activo,
+                EquipoId = a.EquipoId
+            }).ToList()
+        };
     }
 }

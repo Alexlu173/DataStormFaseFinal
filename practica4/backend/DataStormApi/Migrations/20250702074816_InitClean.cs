@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataStormApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitClean : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace DataStormApi.Migrations
                 name: "Operaciones",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "TEXT", nullable: true),
                     Estado = table.Column<string>(type: "TEXT", nullable: false),
@@ -31,54 +31,58 @@ namespace DataStormApi.Migrations
                 name: "Equipos",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "TEXT", nullable: true),
                     especialidad = table.Column<string>(type: "TEXT", nullable: true),
-                    OperacionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OperacionId1 = table.Column<long>(type: "INTEGER", nullable: true)
+                    OperacionId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Equipos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Equipos_Operaciones_OperacionId1",
-                        column: x => x.OperacionId1,
+                        name: "FK_Equipos_Operaciones_OperacionId",
+                        column: x => x.OperacionId,
                         principalTable: "Operaciones",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Agentes",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    NombreAgente = table.Column<string>(type: "TEXT", nullable: true),
                     Nombre = table.Column<string>(type: "TEXT", nullable: true),
-                    rango = table.Column<string>(type: "TEXT", nullable: true),
+                    Apellido = table.Column<string>(type: "TEXT", nullable: true),
+                    email = table.Column<string>(type: "TEXT", nullable: true),
+                    password = table.Column<string>(type: "TEXT", nullable: true),
+                    rango = table.Column<string>(type: "TEXT", nullable: false),
                     Activo = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EquipoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    EquipoId1 = table.Column<long>(type: "INTEGER", nullable: true)
+                    EquipoId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Agentes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Agentes_Equipos_EquipoId1",
-                        column: x => x.EquipoId1,
+                        name: "FK_Agentes_Equipos_EquipoId",
+                        column: x => x.EquipoId,
                         principalTable: "Equipos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agentes_EquipoId1",
+                name: "IX_Agentes_EquipoId",
                 table: "Agentes",
-                column: "EquipoId1");
+                column: "EquipoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipos_OperacionId1",
+                name: "IX_Equipos_OperacionId",
                 table: "Equipos",
-                column: "OperacionId1");
+                column: "OperacionId");
         }
 
         /// <inheritdoc />

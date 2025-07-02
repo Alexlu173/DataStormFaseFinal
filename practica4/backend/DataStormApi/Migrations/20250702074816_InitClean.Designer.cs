@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataStormApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250627081043_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250702074816_InitClean")]
+    partial class InitClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,35 +22,45 @@ namespace DataStormApi.Migrations
 
             modelBuilder.Entity("DataStormApi.Models.Agente", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("EquipoId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Apellido")
+                        .HasColumnType("TEXT");
 
-                    b.Property<long?>("EquipoId1")
+                    b.Property<int>("EquipoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NombreAgente")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("password")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("rango")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EquipoId1");
+                    b.HasIndex("EquipoId");
 
                     b.ToTable("Agentes");
                 });
 
             modelBuilder.Entity("DataStormApi.Models.Equipo", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -60,22 +70,19 @@ namespace DataStormApi.Migrations
                     b.Property<int>("OperacionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("OperacionId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("especialidad")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OperacionId1");
+                    b.HasIndex("OperacionId");
 
                     b.ToTable("Equipos");
                 });
 
             modelBuilder.Entity("DataStormApi.Models.Operacion", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -101,7 +108,9 @@ namespace DataStormApi.Migrations
                 {
                     b.HasOne("DataStormApi.Models.Equipo", "Equipo")
                         .WithMany("Agentes")
-                        .HasForeignKey("EquipoId1");
+                        .HasForeignKey("EquipoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Equipo");
                 });
@@ -110,7 +119,9 @@ namespace DataStormApi.Migrations
                 {
                     b.HasOne("DataStormApi.Models.Operacion", "Operacion")
                         .WithMany("Equipos")
-                        .HasForeignKey("OperacionId1");
+                        .HasForeignKey("OperacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Operacion");
                 });

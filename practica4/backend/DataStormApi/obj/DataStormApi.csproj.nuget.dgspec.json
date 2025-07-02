@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStorm\\practica4\\backend\\DataStormApi\\DataStormApi.csproj": {}
+    "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStormFaseFinal\\practica4\\backend\\DataStormApi\\DataStormApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStorm\\practica4\\backend\\DataStormApi\\DataStormApi.csproj": {
+    "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStormFaseFinal\\practica4\\backend\\DataStormApi\\DataStormApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStorm\\practica4\\backend\\DataStormApi\\DataStormApi.csproj",
+        "projectUniqueName": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStormFaseFinal\\practica4\\backend\\DataStormApi\\DataStormApi.csproj",
         "projectName": "DataStormApi",
-        "projectPath": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStorm\\practica4\\backend\\DataStormApi\\DataStormApi.csproj",
+        "projectPath": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStormFaseFinal\\practica4\\backend\\DataStormApi\\DataStormApi.csproj",
         "packagesPath": "C:\\Users\\alexl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStorm\\practica4\\backend\\DataStormApi\\obj\\",
+        "outputPath": "C:\\Users\\alexl\\Desktop\\Practicas curriculares\\DataStormFaseFinal\\practica4\\backend\\DataStormApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alexl\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -79,6 +79,10 @@
             "NSwag.AspNetCore": {
               "target": "Package",
               "version": "[14.4.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.12.1, )"
             }
           },
           "imports": [
