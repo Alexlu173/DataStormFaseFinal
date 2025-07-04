@@ -1,22 +1,32 @@
-<!-- NavBar.vue -->
 <script setup>
-import { ref } from 'vue';
-const isDarkMode = ref(false);
-// Función para cambiar el tema
-const toggleTheme = () => {
-  isDarkMode.value = !isDarkMode.value;
-  document.documentElement.classList.toggle('dark', isDarkMode.value);
-  localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
-};
-// Cargar el tema al iniciar
-if (localStorage.getItem('theme') === 'dark') {
-  isDarkMode.value = true;
-  document.documentElement.classList.add('dark');
-} else {
-  isDarkMode.value = false;
-  document.documentElement.classList.remove('dark');
+import { ref, onMounted } from 'vue'
+
+const isDarkMode = ref(false)
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme)
+  localStorage.setItem('theme', theme)
+  isDarkMode.value = theme === 'dark'
 }
 
+function toggleTheme() {
+  const newTheme = isDarkMode.value ? 'dark' : 'light'
+  applyTheme(newTheme)
+}
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme')
+
+  if (savedTheme) {
+    // Si el usuario ya eligió un tema y esta guardado en el localstorage, se aplica ese
+    applyTheme(savedTheme)
+  } else {
+    // Si no hay preferencia guardada, detecta la del sistema
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const theme = prefersDark ? 'dark' : 'light'
+    applyTheme(theme)
+  }
+})
 </script>
 
 <template>
@@ -34,7 +44,7 @@ if (localStorage.getItem('theme') === 'dark') {
           <router-link to="/login" class="btn btn-ghost">Login</router-link>
           <router-link to="/register" class="btn btn-ghost">Registro</router-link>
           <label class="toggle text-base-content">
-            <input type="checkbox" value="dark" class="theme-controller" />
+            <input type="checkbox" v-model="isDarkMode" class="theme-controller" @change="toggleTheme" />
 
             <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor">

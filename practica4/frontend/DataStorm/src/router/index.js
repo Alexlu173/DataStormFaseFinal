@@ -5,6 +5,7 @@ import Register from '@/views/Register.vue'
 import Operaciones from '@/views/Operaciones.vue'
 import Equipos from '@/views/Equipos.vue'
 import Agentes from '@/views/Agentes.vue'
+import OperacionTablero from '../views/OperacionTablero.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/operaciones',
       name: 'operaciones',
       component: Operaciones,
+    },
+    {
+      path: '/operaciones/:id',
+      name: 'operacion-tablero',
+      component: OperacionTablero
     },
     {
       path: '/equipos',

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataStormApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79fca5d37f053c463c701d4f0caf63c489b1423e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0eb48c8ebc1a4c33501a74ab0f0515ca53453a9b")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataStormApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataStormApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
