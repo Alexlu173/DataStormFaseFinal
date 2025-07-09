@@ -104,7 +104,7 @@ namespace DataStormApi.Controllers
                 {
                     Id = a.Id,
                     Nombre = a.Nombre,
-                    Rango = a.rango,
+                    Rango = a.Rango,
                     Activo = a.Activo,
                     EquipoId = a.EquipoId
                 }).ToList()

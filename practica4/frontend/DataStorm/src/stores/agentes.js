@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useAgentesStore = defineStore = ('agentes', {
+export const useAgentesStore = defineStore('agentes', {
     state: () => ({
         agentes: [],
         loading: false,
@@ -53,5 +53,22 @@ export const useAgentesStore = defineStore = ('agentes', {
                 this.loading = false
             }
         },
+        async editarAgente(id, agente){
+            this.loading = true
+            this.error = null
+            try{
+                const response = await fetch(`http://localhost:5190/api/agentes/${id}`,{
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(agente)
+                })
+                if(!response.ok) throw new Error('Error al editar agente')
+                await this.fetchAgentes()
+            } catch(err){
+                this.error = err.message || 'Error desconocido'
+            } finally{
+                this.loading = false
+            }
+        }
     }
 })

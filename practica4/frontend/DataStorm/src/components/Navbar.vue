@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-
+import { authStore } from '@/stores/auth'
 const isDarkMode = ref(false)
 
 function applyTheme(theme) {
@@ -27,6 +27,12 @@ onMounted(() => {
     applyTheme(theme)
   }
 })
+const auth = authStore()
+
+function handleLogout() {
+  auth.logout()
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -36,10 +42,10 @@ onMounted(() => {
       <router-link to="/" class="btn btn-ghost normal-case text-xl">DataStorm</router-link>
     </div>
     <!-- Links -->
-    <div class="flex-none gap-2">
+    <div class="flex grow justify-end px-2">
       <div class="hidden md:flex items-center gap-4">
         <router-link to="/" class="btn btn-ghost">Inicio</router-link>
-        <template v-if=true>
+        <template v-if="!auth.isAuthenticated">
           <router-link to="/operaciones" class="btn btn-ghost">Operaciones</router-link>
           <router-link to="/login" class="btn btn-ghost">Login</router-link>
           <router-link to="/register" class="btn btn-ghost">Registro</router-link>
@@ -67,8 +73,16 @@ onMounted(() => {
           </label>
         </template>
         <template v-else>
-          <router-link to="/todolist" class="btn btn-ghost">Tareas</router-link>
-          <button @click="logout" class="btn btn-outline btn-sm">Cerrar sesión</button>
+          <router-link to="/operaciones" class="btn btn-ghost">Operaciones</router-link>
+          <div class="dropdown dropdown-end" v-if="auth.user">
+            <div tabindex="0" role="button"
+              class="avatar avatar-placeholder bg-neutral text-neutral-content w-8 rounded-full">{{ auth.user.nombre }}
+            </div>
+            <ul tabindex="0" class="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm">
+              <li><router-link to="/perfil">Perfil</router-link></li>
+              <li><a @click="handleLogout">Cerrar sesión</a></li>
+            </ul>
+          </div>
         </template>
       </div>
       <!-- Menú móvil -->

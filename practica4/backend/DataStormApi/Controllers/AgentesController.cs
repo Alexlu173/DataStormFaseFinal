@@ -42,11 +42,10 @@ namespace DataStormApi.Controllers
             var agente = new Agente
             {
                 Nombre = dto.Nombre,
-                NombreAgente = dto.NombreAgente,
-                Apellido = dto.Apellido,
-                email = dto.email,
-                password = dto.password,
-                rango = dto.Rango,
+                Apellidos = dto.Apellidos,
+                Email = dto.Email,
+                Password = dto.Password,
+                Rango = dto.Rango,
                 Activo = dto.Activo,
                 EquipoId = dto.EquipoId
             };
@@ -64,11 +63,10 @@ namespace DataStormApi.Controllers
             if (agente == null) return NotFound();
 
             agente.Nombre = dto.Nombre;
-            agente.NombreAgente = dto.NombreAgente;
-            agente.Apellido = dto.Apellido;
-            agente.email = dto.email;
-            agente.password = dto.password;
-            agente.rango = dto.Rango;
+            agente.Apellidos = dto.Apellidos;
+            agente.Email = dto.Email;
+            agente.Password = dto.Password;
+            agente.Rango = dto.Rango;
             agente.Activo = dto.Activo;
             agente.EquipoId = dto.EquipoId;
 
@@ -91,11 +89,10 @@ namespace DataStormApi.Controllers
         {
             Id = a.Id,
             Nombre = a.Nombre,
-            NombreAgente = a.NombreAgente,
-            Apellido = a.Apellido,
-            email = a.email,
-            password = a.password,
-            Rango = a.rango,
+            Apellidos = a.Apellidos,
+            Email = a.Email,
+            Password = a.Password,
+            Rango = a.Rango,
             Activo = a.Activo,
             EquipoId = a.EquipoId
         };

@@ -1,6 +1,21 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import FormularioRegister from '../components/FormularioRegister.vue'
+import { authStore } from '@/stores/auth'
+import { reactive } from 'vue'
+const router = useRouter()
+const store = authStore()
+
+async function handleRegister(data) {
+  await store.register(data)
+  console.log('Datos de registro:', data)
+
+  setTimeout(() => {
+    alert('Registro exitoso')
+    router.push('/login')
+  }, 1000)
+}
+
 </script>
 
 <template>

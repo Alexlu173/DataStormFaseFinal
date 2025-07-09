@@ -48,10 +48,11 @@ namespace DataStormApi.Data
             context.SaveChanges();
 
             // Crear agentes
-            var agente1 = new Agente { Nombre = "Agente 1", NombreAgente="Pedro", Apellido="Ramirez", email="agente1@gmail.com", password="123" ,rango = "Líder", Activo = true, EquipoId = equipoAlpha.Id };
-            var agente2 = new Agente { Nombre = "Agente 2", NombreAgente="Alonso", Apellido="Perez", email="agente2@gmail.com", password="1233",rango = "Especialista", Activo = true, EquipoId = equipoAlpha.Id };
-            var agente3 = new Agente { Nombre = "Agente 3", NombreAgente="Maria", Apellido="Sanchez", email="agente3@gmail.com", password="1234",rango = "Técnico", Activo = true, EquipoId = equipoBeta.Id };
-            var agente4 = new Agente { Nombre = "Agente 4",NombreAgente="Alejandro", Apellido="Luna", email="agente4@gmail.com", password="1232", rango = "Operativo", Activo = true, EquipoId = equipoDelta.Id };
+            var agente = new Agente { Nombre = "John", Apellidos = "Perez", Rango = "Líder", Email = "john@test.com", Password = "xxx", Salt = "xxx", Activo = true, EquipoId = equipoAlpha.Id};
+            var agente1 = new Agente { Nombre = "Agente 1", Apellidos="Ramirez", Email="agente1@gmail.com", Password="123", Rango = "Líder", Salt="xxx", Activo = true, EquipoId = equipoAlpha.Id };
+            var agente2 = new Agente { Nombre = "Agente 2", Apellidos="Perez", Email="agente2@gmail.com", Password="1233", Rango = "Especialista", Salt="xxx", Activo = true, EquipoId = equipoAlpha.Id };
+            var agente3 = new Agente { Nombre = "Agente 3", Apellidos="Sanchez", Email="agente3@gmail.com", Password="1234", Rango = "Técnico", Salt="xxx", Activo = true, EquipoId = equipoBeta.Id };
+            var agente4 = new Agente { Nombre = "Agente 4", Apellidos="Luna", Email="agente4@gmail.com", Password="1232", Rango = "Operativo", Activo = true, Salt="xxx", EquipoId = equipoDelta.Id };
             context.Agentes.AddRange(agente1, agente2, agente3, agente4);
             context.SaveChanges();
         }

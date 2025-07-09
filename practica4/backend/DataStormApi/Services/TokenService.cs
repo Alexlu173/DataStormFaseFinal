@@ -1,12 +1,23 @@
 using DataStormApi.Models;
 using DataStormApi.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DataStormApi.Services;
 
-/*
+
 public class TokenService
 {
+    private readonly IConfiguration _configuration;
+    public TokenService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     public string CreateToken(Agente agente)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -15,13 +26,14 @@ public class TokenService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-            new Claim(ClaimTypes.NameIdentifier, agente.Id),
-            new Claim(ClaimTypes.Role, agente.rango.ToString()),
-                // Add more claims as needed
+            new Claim(ClaimTypes.NameIdentifier, agente.Id.ToString()),
+            new Claim(ClaimTypes.Name, agente.Nombre),
+            new Claim(ClaimTypes.Email, agente.Email),
+            new Claim(ClaimTypes.Role, agente.Rango)
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = _configuration["Jwt:Issuer"], // Add this line
+            Issuer = _configuration["Jwt:Issuer"],
             Audience = _configuration["Jwt:Audience"]
         };
 
@@ -29,5 +41,5 @@ public class TokenService
         return tokenHandler.WriteToken(token);
     }
 }
-*/
+
 
