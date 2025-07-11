@@ -34,7 +34,7 @@ function abrirModalCrearEquipo() {
     <section class="p-6">
         <h1 class="text-2xl text-center font-bold mb-4">Operación: {{ operacion?.nombre || '...' }}</h1>
 
-        <EquiposBoard :equipos="operacion?.equipos || []" @add="abrirModalCrearEquipo" />
+        <EquiposBoard :equipos="operacion?.equipos || []" :operacion-id="operacion?.id" @add="abrirModalCrearEquipo" />
         <EquipoModal v-if="mostrarModal" :operacion-id="operacion.id" @close="mostrarModal = false"
             @create="crearEquipo" />
 

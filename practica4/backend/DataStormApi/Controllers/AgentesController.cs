@@ -74,6 +74,20 @@ namespace DataStormApi.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}/equipo")]
+        public async Task<IActionResult> ActualizarEquipoDelAgente(int id, [FromBody] AsignarEquipoRequest request)
+        {
+            var agente = await _context.Agentes.FindAsync(id);
+            if (agente == null)
+                return NotFound("Agente no encontrado.");
+
+            agente.EquipoId = request.EquipoId;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAgente(int id)
         {

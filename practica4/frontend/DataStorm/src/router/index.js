@@ -7,6 +7,9 @@ import Equipos from '@/views/Equipos.vue'
 import Agentes from '@/views/Agentes.vue'
 import OperacionTablero from '../views/OperacionTablero.vue'
 import EquipoDetail from '@/views/EquipoDetail.vue'
+import Profile from '@/views/Profile.vue'
+import AgentesAdmin from '@/views/AgentesAdmin.vue'
+import EquiposAdmin from '@/views/EquiposAdmin.vue'
 import { authStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -61,9 +64,30 @@ const router = createRouter({
       }
     },
     {
-      path: '/agentes',
-      name: 'agentes',
-      component: Agentes,
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+      meta: {
+        requiresAuth: true, // Protege esta ruta
+      }
+    },
+    {
+      path: '/admin/agentes',
+      name: 'agentes-admin',
+      component: AgentesAdmin,
+      meta:{
+        requiresAuth: true, // Protege esta ruta
+        requiresAdmin: true, // Solo accesible para administradores
+      }
+    },
+    {
+      path: '/admin/equipos',
+      name: 'equipos-admin',
+      component: EquiposAdmin,
+      meta: {
+        requiresAuth: true, // Protege esta ruta
+        requiresAdmin: true, // Solo accesible para administradores
+    }
     }
   ],
 })

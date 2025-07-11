@@ -21,7 +21,6 @@ export const useOperacionStore = defineStore('operaciones', {
                 this.loading = false
             }
         },
-
         async crearOperacion(operacion) {
             try {
                 const res = await fetch('http://localhost:5190/api/operaciones', {
@@ -35,7 +34,6 @@ export const useOperacionStore = defineStore('operaciones', {
                 console.error('[crearOperacion]', err)
             }
         },
-
         async eliminarOperacion(id) {
             try {
                 const res = await fetch(`http://localhost:5190/api/operaciones/${id}`, {
@@ -46,6 +44,14 @@ export const useOperacionStore = defineStore('operaciones', {
             } catch (err) {
                 console.error('[eliminarOperacion]', err)
             }
+        },
+        async editarOperacion(id, data) {
+            const res = await fetch(`http://localhost:5190/api/operaciones/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            if (res.ok) await this.fetchOperaciones()
         }
     }
 })

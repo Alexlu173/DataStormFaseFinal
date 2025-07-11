@@ -16,5 +16,5 @@ public class Operacion
     public DateTime FechaInicio { get; set; }
     public DateTime FechaFin { get; set; }
     //Relacion
-    public ICollection<Equipo> Equipos { get; set; } = new List<Equipo>();
+    public ICollection<Equipo>? Equipos { get; set; } = new List<Equipo>();
 }

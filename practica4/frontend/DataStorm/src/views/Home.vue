@@ -47,6 +47,34 @@ import Footer from '../components/Footer.vue'
         class="w-full max-w-4xl mx-auto rounded-lg shadow" alt="App mockup" />
     </section>
 
+    <!-- Testimonios -->
+    <section class="py-20 px-6 bg-base-200 text-center">
+      <h2 class="text-2xl font-bold mb-8">Testimonios</h2>
+      <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+        <div class="rounded-lg shadow p-6">
+          <p class="italic mb-4">"DataStorm ha revolucionado la forma en que gestionamos nuestras operaciones. ¡Sencillo
+            y potente!"</p>
+          <div class="avatar">
+            <div class="w-16 rounded-full">
+              <img src="../assets/agente3.jpg" />
+            </div>
+          </div>
+          <div class="font-bold">María López</div>
+          <div class="text-sm text-gray-500">Coordinadora de Operaciones</div>
+        </div>
+        <div class="rounded-lg shadow p-6">
+          <p class="italic mb-4">"La visualización en tiempo real y la gestión de equipos es justo lo que
+            necesitábamos."</p>
+          <div class="avatar">
+            <div class="w-16 rounded-full">
+              <img src="../assets/agente2.jpg" />
+            </div>
+          </div>
+          <div class="font-bold">Carlos Pérez</div>
+          <div class="text-sm text-gray-500">Jefe de Equipo</div>
+        </div>
+      </div>
+    </section>
     <!-- CTA Section -->
     <section class="py-20 px-6 bg-base-200 text-center">
       <h2 class="text-3xl font-bold mb-4">Únete a la nueva forma de gestionar misiones</h2>

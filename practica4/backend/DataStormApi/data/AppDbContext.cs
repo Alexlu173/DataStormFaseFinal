@@ -15,6 +15,18 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Operacion>()
             .Property(o => o.Estado)
             .HasConversion<string>(); // Guarda el enum como texto
+
+        modelBuilder.Entity<Equipo>()
+            .HasOne(e => e.Operacion)
+            .WithMany(o => o.Equipos)
+            .HasForeignKey(e => e.OperacionId)
+            .OnDelete(DeleteBehavior.SetNull); 
+
+        modelBuilder.Entity<Agente>()
+            .HasOne(a => a.Equipo)
+            .WithMany(e => e.Agentes)
+            .HasForeignKey(a => a.EquipoId)
+            .OnDelete(DeleteBehavior.SetNull); 
     }
 
     public DbSet<Operacion> Operaciones => Set<Operacion>();

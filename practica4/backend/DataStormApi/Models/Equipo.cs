@@ -9,7 +9,7 @@ public class Equipo
     public string? especialidad { get; set; }
     //Relacion
     [ForeignKey("Operacion")]
-    public int OperacionId { get; set; }
+    public int? OperacionId { get; set; }
     public Operacion? Operacion { get; set; }
     public ICollection<Agente> Agentes { get; set; } = new List<Agente>();
 

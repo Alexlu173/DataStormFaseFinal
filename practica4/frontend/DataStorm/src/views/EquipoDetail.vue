@@ -6,6 +6,7 @@ import { useAgentesStore } from '@/stores/agentes'
 
 import AgenteCard from '@/components/AgenteCard.vue'
 import AgenteModal from '@/components/AgenteModal.vue'
+import AssignAgenteModal from '@/components/AssignAgenteModal.vue'
 
 const route = useRoute()
 const equipoId = Number(route.params.id)
@@ -64,6 +65,7 @@ onMounted(cargarEquipo)
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-semibold">Agentes del equipo</h2>
             <button class="btn btn-sm btn-primary" @click="abrirModalCrear">➕ Añadir agente</button>
+            <button class="btn btn-sm btn-primary" @click="abrirModalCrear">➕ Asignar agente</button>
         </div>
 
         <div class="grid sm:grid-cols-2 gap-4">
@@ -75,4 +77,5 @@ onMounted(cargarEquipo)
     <!-- Modal -->
     <AgenteModal :show="mostrarModal" :agente="agenteSeleccionado" :equipo-id="equipoId" @save="guardarAgente"
         @close="cerrarModal" />
+    <AssignAgenteModal :equipo-id="equipoId" :open="mostrarModal" @close="cerrarModal" />
 </template>

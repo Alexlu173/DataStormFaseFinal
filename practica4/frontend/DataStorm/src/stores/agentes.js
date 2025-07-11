@@ -53,22 +53,42 @@ export const useAgentesStore = defineStore('agentes', {
                 this.loading = false
             }
         },
-        async editarAgente(id, agente){
+        async editarAgente(id, agente) {
             this.loading = true
             this.error = null
-            try{
-                const response = await fetch(`http://localhost:5190/api/agentes/${id}`,{
+            try {
+                const response = await fetch(`http://localhost:5190/api/agentes/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(agente)
                 })
-                if(!response.ok) throw new Error('Error al editar agente')
+                if (!response.ok) throw new Error('Error al editar agente')
                 await this.fetchAgentes()
-            } catch(err){
+            } catch (err) {
                 this.error = err.message || 'Error desconocido'
-            } finally{
+            } finally {
                 this.loading = false
             }
-        }
+        },
+        async asignarEquipo(id, equipoId) {
+            this.loading = true
+            this.error = null
+            try {
+                const response = await fetch(`http://localhost:5190/api/agentes/${id}/equipos/`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ equipoId: nuevoEquipoId })
+                })
+                if (!response.ok) throw new Error('Error al asignar agente al equipo')
+                await this.fetchAgentes()
+            } catch (err) {
+                this.error = err.message || 'Error desconocido'
+            } finally {
+                this.loading = false
+            }
+        },
+        getAgenteById(id) {
+            return this.agentes.find(a => a.id === id)
+        },
     }
 })

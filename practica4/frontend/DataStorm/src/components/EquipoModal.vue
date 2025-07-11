@@ -15,7 +15,6 @@ function handleSubmit() {
         especialidad: especialidad.value,
         operacionId: props.operacionId
     })
-
     // Reset
     nombre.value = ''
     especialidad.value = 'Reconocimiento'
